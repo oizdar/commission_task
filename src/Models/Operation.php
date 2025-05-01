@@ -9,6 +9,7 @@ use App\CommissionTask\Enums\UserType;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Money;
+use Money\Parser\DecimalMoneyParser;
 
 readonly class Operation
 {
@@ -18,7 +19,7 @@ readonly class Operation
         public \DateTimeImmutable $date,
         public string $userId,
         public UserType $userType,
-        public OperationType $type,
+        public OperationType $operationType,
         string $amount,
         string $currency,
     ) {
@@ -37,7 +38,8 @@ readonly class Operation
             throw new \InvalidArgumentException('Currency not supported');
         }
 
-        $this->amount = new Money($amount, $currency);
+        $decimalParser = new DecimalMoneyParser($currencies);
+        $this->amount = $decimalParser->parse($amount, $currency);
 
         if ($this->amount->lessThanOrEqual(new Money(0, $currency))) {
             throw new \InvalidArgumentException('Operation amount must be greater than zero');

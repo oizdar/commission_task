@@ -5,19 +5,30 @@ declare(strict_types=1);
 namespace App\CommissionTask\Models;
 
 /**
- * @template T of mixed
+ * @template TValue of mixed
  *
- * @implements CollectionInterface<T>
+ * @implements CollectionInterface<TValue>
+ * @implements \IteratorAggregate<int, TValue>
  */
-class Collection implements CollectionInterface
+class Collection implements CollectionInterface, \IteratorAggregate
 {
     /**
-     * @var array<T>
+     * @var array<int, TValue>
      */
-    private array $items = [];
+    protected array $items = [];
 
     /**
-     * @param T $item
+     * @param array<TValue> $items
+     */
+    public function __construct(array $items = [])
+    {
+        foreach ($items as $item) {
+            $this->add($item);
+        }
+    }
+
+    /**
+     * @param TValue $item
      */
     public function add(mixed $item): void
     {
@@ -25,7 +36,15 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param T $item
+     * @return TValue|null
+     */
+    public function get(int $index): mixed
+    {
+        return $this->items[$index] ?? null;
+    }
+
+    /**
+     * @param TValue $item
      */
     public function remove(mixed $item): void
     {
@@ -33,7 +52,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @param T $item
+     * @param TValue $item
      */
     public function contains(mixed $item): bool
     {
@@ -41,15 +60,23 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * @return array<T>
+     * @return array<TValue>
      */
     public function all(): array
     {
-        return $this->items;
+        return array_values($this->items);
     }
 
     public function count(): int
     {
         return count($this->items);
+    }
+
+    /**
+     * @return \Traversable<int, TValue>
+     */
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->items);
     }
 }

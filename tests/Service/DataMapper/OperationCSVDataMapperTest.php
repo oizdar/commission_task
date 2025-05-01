@@ -34,7 +34,7 @@ class OperationCSVDataMapperTest extends TestCase
         $this->assertEquals($expectedResult->date, $operation->date);
         $this->assertEquals($expectedResult->userId, $operation->userId);
         $this->assertEquals($expectedResult->userType, $operation->userType);
-        $this->assertEquals($expectedResult->type, $operation->type);
+        $this->assertEquals($expectedResult->operationType, $operation->operationType);
         $this->assertEquals($expectedResult->amount, $operation->amount);
     }
 

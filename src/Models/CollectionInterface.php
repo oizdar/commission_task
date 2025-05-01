@@ -17,6 +17,13 @@ interface CollectionInterface
     public function add(mixed $item): void;
 
     /**
+     * Zwraca element kolekcji na podstawie indeksu.
+     *
+     * @return T|null
+     */
+    public function get(int $index): mixed;
+
+    /**
      * Usuwa element z kolekcji.
      *
      * @param T $item

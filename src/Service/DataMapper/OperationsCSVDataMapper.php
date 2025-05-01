@@ -30,7 +30,7 @@ class OperationsCSVDataMapper implements MapperInterface
                 date: new \DateTimeImmutable($row[self::DATE_FIELD] ?? ''),
                 userId: $row[self::USER_ID_FIELD] ?? '',
                 userType: UserType::from($row[self::USER_TYPE_FIELD] ?? ''),
-                type: OperationType::from($row[self::OPERATION_TYPE_FIELD] ?? ''),
+                operationType: OperationType::from($row[self::OPERATION_TYPE_FIELD] ?? ''),
                 amount: $row[self::AMOUNT_FIELD] ?? '',
                 currency: $row[self::CURRENCY_FIELD] ?? '',
             );
