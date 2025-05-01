@@ -5,7 +5,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Oizdar\\CommissionTask\\": "src"
+            "App\\CommissionTask\\": "src"
         }
     },
     "autoload-dev": {
@@ -14,12 +14,13 @@
         }
     },
     "require": {
-        "php": ">=7.0",
+        "php": ">=8.3",
         "ext-bcmath": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5",
-        "friendsofphp/php-cs-fixer": "2.16"
+        "friendsofphp/php-cs-fixer": "^3.75",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.1"
     },
     "config": {
         "sort-packages": true,
@@ -29,6 +30,7 @@
         "phpunit": "phpunit",
         "fix-cs": "php-cs-fixer fix",
         "test-cs": "php-cs-fixer fix --dry-run -v",
-        "test": ["@phpunit", "@test-cs"]
+        "phpstan": "phpstan analyse src tests",
+        "test": ["@phpstan", "@phpunit", "@test-cs"]
     }
 }

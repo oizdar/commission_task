@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 include __DIR__ . '/vendor/autoload.php';
 
-$finder = PhpCsFixer\Finder::create()
+$finder = (new PhpCsFixer\Finder())
     ->in(['src'])
 ;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
         'no_alternative_syntax' => true,
