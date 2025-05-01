@@ -15,7 +15,8 @@
     },
     "require": {
         "php": ">=8.3",
-        "ext-bcmath": "*"
+        "ext-bcmath": "*",
+        "moneyphp/money": "^4.7"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.75",
