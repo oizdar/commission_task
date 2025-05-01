@@ -177,7 +177,6 @@ class OperationCSVDataMapperTest extends TestCase
                 ],
                 new \InvalidArgumentException('Amount cannot be equal to or less than 0')
             ],
-
         ];
     }
 }

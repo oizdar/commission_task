@@ -9,12 +9,13 @@ use App\CommissionTask\Service\DataMapper\MapperInterface;
 
 /**
  * @template T of object
+ * @template TCollection of CollectionInterface<T>
  */
 class CsvFileMapper
 {
     /**
      * @param MapperInterface<T>     $mapper
-     * @param CollectionInterface<T> $collection
+     * @param TCollection $collection
      */
     public function __construct(
         protected MapperInterface $mapper,
@@ -24,7 +25,7 @@ class CsvFileMapper
     }
 
     /**
-     * @return CollectionInterface<T>
+     * @return TCollection
      */
     public function load(): CollectionInterface
     {

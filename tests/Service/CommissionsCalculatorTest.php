@@ -287,6 +287,72 @@ class CommissionsCalculatorTest extends TestCase
                     ),
                 ])
             ],
+            [
+                new OperationsCollection([
+                    $operation1 = new Operation(
+                        new \DateTimeImmutable('2016-01-06'),
+                        '1',
+                        UserType::Private,
+                        OperationType::Withdraw,
+                        '30000',
+                        'JPY'
+                    ),
+                    $operation2 = new Operation(
+                        new \DateTimeImmutable('2016-01-07'),
+                        '1',
+                        UserType::Private,
+                        OperationType::Withdraw,
+                        '1000.00',
+                        'EUR'
+                    ),
+                    $operation3 = new Operation(
+                        new \DateTimeImmutable('2016-01-07'),
+                        '1',
+                        UserType::Private,
+                        OperationType::Withdraw,
+                        '100.00',
+                        'USD'
+                    ),
+                    $operation4 = new Operation(
+                        new \DateTimeImmutable('2016-01-10'),
+                        '1',
+                        UserType::Private,
+                        OperationType::Withdraw,
+                        '100.00',
+                        'EUR'
+                    ),
+                ]),
+                new Collection([
+                    new Commission(
+                        $operation1,
+                        $moneyParser->parse(
+                            '0',
+                            new Currency('JPY')
+                        ),
+                    ),
+                    new Commission(
+                        $operation2,
+                        $moneyParser->parse(
+                            '0.70',
+                            new Currency('EUR')
+                        ),
+                    ),
+                    new Commission(
+                        $operation3,
+                        $moneyParser->parse(
+                            '0.30',
+                            new Currency('USD')
+                        ),
+                    ),
+                    new Commission(
+                        $operation4,
+                        $moneyParser->parse(
+                            '0.30',
+                            new Currency('EUR')
+                        ),
+                    ),
+                ]),
+            ],
         ];
     }
 }

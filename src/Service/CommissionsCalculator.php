@@ -41,9 +41,9 @@ readonly class CommissionsCalculator
     }
 
     /**
-     * @return Collection<Commission>
+     * @return CommissionsCollection
      */
-    public function calculateCommissions(): Collection
+    public function calculateCommissions(): CommissionsCollection
     {
         foreach ($this->operations as $operation) {
             $this->commissions->add($this->calculateCommissionFromOperation($operation));
@@ -107,7 +107,7 @@ readonly class CommissionsCalculator
             $valueToCalculateCommission = $operation->amount->subtract($remainingFreeAmount);
 
             if ($valueToCalculateCommission->greaterThan(new Money(0, $operation->amount->getCurrency()))) {
-                return $valueToCalculateCommission->multiply((string) (self::PRIVATE_WITHDRAW_COMMISSION_PERCENTAGE / self::PERCENTAGE_DENOMINATOR));
+                return $valueToCalculateCommission->multiply((string) (self::PRIVATE_WITHDRAW_COMMISSION_PERCENTAGE / self::PERCENTAGE_DENOMINATOR), Money::ROUND_UP);
             }
 
             return new Money(0, $operation->amount->getCurrency());
