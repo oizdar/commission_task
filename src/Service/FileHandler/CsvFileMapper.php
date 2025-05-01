@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\CommissionTask\Service\FileHandler;
 
+use App\CommissionTask\Models\CollectionInterface;
 use App\CommissionTask\Service\DataMapper\MapperInterface;
 
 /**
@@ -12,29 +13,32 @@ use App\CommissionTask\Service\DataMapper\MapperInterface;
 class CsvFileMapper
 {
     /**
-     * @param MapperInterface<T> $mapper
+     * @param MapperInterface<T>     $mapper
+     * @param CollectionInterface<T> $collection
      */
-    public function __construct(protected MapperInterface $mapper, protected string $filePath)
-    {
+    public function __construct(
+        protected MapperInterface $mapper,
+        protected CollectionInterface $collection,
+        protected string $filePath,
+    ) {
     }
 
     /**
-     * @return array<T>
+     * @return CollectionInterface<T>
      */
-    public function load(): array
+    public function load(): CollectionInterface
     {
         $file = fopen($this->filePath, 'r');
         if ($file === false) {
             throw new \RuntimeException("Unable to open file: $this->filePath");
         }
 
-        $data = [];
         while (($row = fgetcsv($file)) !== false) {
-            $data[] = $this->mapper->mapRow($row);
+            $this->collection->add($this->mapper->mapRow($row));
         }
 
         fclose($file);
 
-        return $data;
+        return $this->collection;
     }
 }

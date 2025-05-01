@@ -23,7 +23,7 @@ class CommissionsCollection extends Collection
         $startOfWeek = $operation->date->modify('monday this week');
         $endOfWeek = $operation->date->modify('sunday this week');
 
-        //todo: performance refactor needed
+        // todo: performance refactor needed
         $filtered = array_filter($this->items,
             fn (Commission $item) => $item->operation->date >= $startOfWeek
                 && $item->operation->date <= $endOfWeek
@@ -31,8 +31,6 @@ class CommissionsCollection extends Collection
                 && $item->operation->userType === $operation->userType
         );
 
-        return new OperationsCollection(array_map(fn(Commission $item) => $item->operation, $filtered));
+        return new OperationsCollection(array_map(fn (Commission $item) => $item->operation, $filtered));
     }
-
-
 }

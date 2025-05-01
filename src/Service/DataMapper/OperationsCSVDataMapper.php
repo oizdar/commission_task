@@ -20,9 +20,6 @@ class OperationsCSVDataMapper implements MapperInterface
     public const int AMOUNT_FIELD = 4;
     public const int CURRENCY_FIELD = 5;
 
-    /**
-     * @throws \DateMalformedStringException
-     */
     public function mapRow(array $row): Operation
     {
         try {

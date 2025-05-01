@@ -121,7 +121,9 @@ class CommissionsCalculatorTest extends TestCase
     {
         $calculator = new CommissionsCalculator($operations);
         $commissions = $calculator->calculateCommissions();
-        $this->assertEquals($expectedCommissions, $commissions);
+        foreach ($expectedCommissions as $key => $expectedCommission) {
+            $this->assertEquals($expectedCommission, $commissions->get($key), 'Commission mismatch for operation ' . $key);
+        }
     }
 
     /**
@@ -132,7 +134,7 @@ class CommissionsCalculatorTest extends TestCase
         $currencies = new ISOCurrencies();
         $moneyParser = new DecimalMoneyParser($currencies);
         return [
-            [
+            [  //Fourth always has commission
                 new OperationsCollection([
                     $operation1 = new Operation(
                         new \DateTimeImmutable('2014-12-31'),
@@ -193,6 +195,93 @@ class CommissionsCalculatorTest extends TestCase
                         $operation4,
                         $moneyParser->parse(
                             '0.30',
+                            new Currency('EUR')
+                        ),
+                    ),
+                ])
+            ],
+            [  // Commission for second - value extended
+                new OperationsCollection([
+                    $operation1 = new Operation(
+                        new \DateTimeImmutable('2014-12-31'),
+                        '1',
+                        UserType::Private,
+                        OperationType::Withdraw,
+                        '500.00',
+                        'EUR'
+                    ),
+                    $operation2 = new Operation(
+                        new \DateTimeImmutable('2014-12-31'),
+                        '1',
+                        UserType::Private,
+                        OperationType::Withdraw,
+                        '700.00',
+                        'EUR'
+                    ),
+                    $operation3 = new Operation(
+                        new \DateTimeImmutable('2014-12-31'),
+                        '1',
+                        UserType::Private,
+                        OperationType::Withdraw,
+                        '100.00',
+                        'USD'
+                    ),
+                ]),
+                new Collection([
+                    new Commission(
+                        $operation1,
+                        $moneyParser->parse(
+                            '0',
+                            new Currency('EUR')
+                        ),
+                    ),
+                    new Commission(
+                        $operation2,
+                        $moneyParser->parse(
+                            '0.60',
+                            new Currency('EUR')
+                        ),
+                    ),
+                    new Commission(
+                        $operation3,
+                        $moneyParser->parse(
+                            '0.30',
+                            new Currency('USD')
+                        ),
+                    ),
+                ])
+            ],
+            [  // No commission in new week
+                new OperationsCollection([
+                    $operation1 = new Operation(
+                        new \DateTimeImmutable('2024-12-31'),
+                        '1',
+                        UserType::Private,
+                        OperationType::Withdraw,
+                        '2000.00',
+                        'EUR'
+                    ),
+                    $operation2 = new Operation(
+                        new \DateTimeImmutable('2025-01-31'),
+                        '1',
+                        UserType::Private,
+                        OperationType::Withdraw,
+                        '1000.00',
+                        'EUR'
+                    ),
+                ]),
+                new Collection([
+                    new Commission(
+                        $operation1,
+                        $moneyParser->parse(
+                            '3.00',
+                            new Currency('EUR')
+                        ),
+                    ),
+                    new Commission(
+                        $operation2,
+                        $moneyParser->parse(
+                            '0.00',
                             new Currency('EUR')
                         ),
                     ),

@@ -11,7 +11,11 @@ use App\CommissionTask\Models\Commission;
 use App\CommissionTask\Models\CommissionsCollection;
 use App\CommissionTask\Models\Operation;
 use App\CommissionTask\Models\OperationsCollection;
+use Money\Converter;
+use Money\Currencies\ISOCurrencies;
 use Money\Currency;
+use Money\Exchange\FixedExchange;
+use Money\Exchange\ReversedCurrenciesExchange;
 use Money\Money;
 
 readonly class CommissionsCalculator
@@ -72,33 +76,47 @@ readonly class CommissionsCalculator
             return $this->calculateCommissionForPrivateWithdraw($operation);
         }
 
-        return $this->calculateCommissionForBussinessWithdraw($operation);
+        return $this->calculateCommissionForBusinessWithdraw($operation);
     }
 
     private function calculateCommissionForPrivateWithdraw(Operation $operation): Money
     {
         $userWeeklyOperations = $this->commissions->getWeeklyUserOperationsFromPreviousCommissions($operation);
 
-        if ($userWeeklyOperations->count() <= self::WEEKLY_FREE_OF_CHARGE_TRANSACTIONS) {
-            $weeklyOperationsSum = $userWeeklyOperations->getSumInCurrency(new Currency(self::WITHDRAW_COMMISSION_CURRENCY));
+        if ($userWeeklyOperations->count() < self::WEEKLY_FREE_OF_CHARGE_TRANSACTIONS) {
+            $exchange = new ReversedCurrenciesExchange(new FixedExchange([
+                'EUR' => [
+                    'USD' => '1.1497',
+                    'JPY' => '129.53',
+                ],
+            ]));
+
+            $converter = new Converter(new ISOCurrencies(), $exchange);
+
+            $weeklyOperationsSum = $userWeeklyOperations->getSumInCurrency($converter, new Currency(self::WITHDRAW_COMMISSION_CURRENCY));
 
             if ($weeklyOperationsSum->greaterThan($this->weeklyFreeOfChargeAmount)) {
-                return new Money(0, $operation->amount->getCurrency());
-
+                return $operation->amount->multiply((string) (self::PRIVATE_WITHDRAW_COMMISSION_PERCENTAGE / self::PERCENTAGE_DENOMINATOR));
             }
 
             $remainingFreeAmount = $this->weeklyFreeOfChargeAmount->subtract($weeklyOperationsSum);
+            if (!$remainingFreeAmount->getCurrency()->equals($operation->amount->getCurrency())) {
+                $remainingFreeAmount = $converter->convert($remainingFreeAmount, $operation->amount->getCurrency());
+            }
+
             $valueToCalculateCommission = $operation->amount->subtract($remainingFreeAmount);
 
-            if($valueToCalculateCommission->greaterThan(new Money(0, $operation->amount->getCurrency()))) {
-                return $valueToCalculateCommission->multiply((string)(self::PRIVATE_WITHDRAW_COMMISSION_PERCENTAGE / self::PERCENTAGE_DENOMINATOR));
+            if ($valueToCalculateCommission->greaterThan(new Money(0, $operation->amount->getCurrency()))) {
+                return $valueToCalculateCommission->multiply((string) (self::PRIVATE_WITHDRAW_COMMISSION_PERCENTAGE / self::PERCENTAGE_DENOMINATOR));
             }
 
             return new Money(0, $operation->amount->getCurrency());
         }
+
+        return $operation->amount->multiply((string) (self::PRIVATE_WITHDRAW_COMMISSION_PERCENTAGE / self::PERCENTAGE_DENOMINATOR));
     }
 
-    private function calculateCommissionForBussinessWithdraw(Operation $operation): Money
+    private function calculateCommissionForBusinessWithdraw(Operation $operation): Money
     {
         return $operation->amount->multiply((string) (self::BUSINESS_WITHDRAW_COMMISSION_PERCENTAGE / self::PERCENTAGE_DENOMINATOR));
     }
