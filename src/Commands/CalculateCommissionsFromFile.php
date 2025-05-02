@@ -20,19 +20,18 @@ class CalculateCommissionsFromFile extends Command
 {
     private CommissionsCalculator $calculator;
 
-    public function __construct(?string $name = null, ExchangeRatesClient $exchangeRatesClient = null)
+    public function __construct(?string $name = null, ?ExchangeRatesClient $exchangeRatesClient = null)
     {
         parent::__construct($name);
 
-        $this->calculator = new CommissionsCalculator($exchangeRatesClient ??  new ExchangeRatesClient());
+        $this->calculator = new CommissionsCalculator($exchangeRatesClient ?? new ExchangeRatesClient());
     }
-
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Oblicza prowizje na podstawie danych z pliku.')
-            ->addArgument('file', InputArgument::OPTIONAL, 'Ścieżka do pliku z danymi operacji', './data/input.csv');
+            ->setDescription('Calculate commisions using given file.')
+            ->addArgument('file', InputArgument::OPTIONAL, 'File path', './data/input.csv');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

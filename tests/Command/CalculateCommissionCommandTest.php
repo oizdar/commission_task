@@ -3,23 +3,42 @@
 namespace App\CommissionTask\Tests\Command;
 
 use App\CommissionTask\Commands\CalculateCommissionsFromFile;
+use App\CommissionTask\Helpers\MoneyHelper;
+use App\CommissionTask\Models\Commission;
+use App\CommissionTask\Models\CommissionsCollection;
+use App\CommissionTask\Models\Operation;
+use App\CommissionTask\Models\OperationsCollection;
+use App\CommissionTask\Services\CommissionsCalculator;
+use App\CommissionTask\Services\DataMapper\CsvFileMapper;
+use App\CommissionTask\Services\DataMapper\OperationsCSVDataMapper;
 use App\CommissionTask\Services\ExchangeRatesClient;
 use Money\Exchange\FixedExchange;
 use Money\Exchange\ReversedCurrenciesExchange;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
 #[CoversClass(CalculateCommissionsFromFile::class)]
+#[UsesClass(MoneyHelper::class)]
+#[UsesClass(ExchangeRatesClient::class)]
+#[UsesClass(CommissionsCollection::class)]
+#[UsesClass(OperationsCollection::class)]
+#[UsesClass(Commission::class)]
+#[UsesClass(Operation::class)]
+#[UsesClass(CommissionsCalculator::class)]
+#[UsesClass(CsvFileMapper::class)]
+#[UsesClass(OperationsCSVDataMapper::class)]
 class CalculateCommissionCommandTest extends TestCase
 {
+    private ExchangeRatesClient $exchangeRatesClientMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->exchangeRatesClientMock = $this->createMock(ExchangeRatesClient::class);
-        $this->exchangeRatesClientMock
+        $exchangeRatesClientMock = $this->createMock(ExchangeRatesClient::class);
+        $exchangeRatesClientMock
             ->method('getRates')
             ->willReturn(new ReversedCurrenciesExchange(new FixedExchange([
                 'EUR' => [
@@ -27,9 +46,11 @@ class CalculateCommissionCommandTest extends TestCase
                     'JPY' => '129.53',
                 ],
             ])));
+
+        $this->exchangeRatesClientMock = $exchangeRatesClientMock;
     }
 
-    public function testCommandExcecution(): void
+    public function testCommandExecution(): void
     {
         $command = new CalculateCommissionsFromFile(exchangeRatesClient: $this->exchangeRatesClientMock);
         $commandTester = new CommandTester($command);

@@ -4,8 +4,10 @@ namespace App\CommissionTask\Tests\Services;
 
 use App\CommissionTask\Enums\OperationType;
 use App\CommissionTask\Enums\UserType;
+use App\CommissionTask\Helpers\MoneyHelper;
 use App\CommissionTask\Models\Collection;
 use App\CommissionTask\Models\Commission;
+use App\CommissionTask\Models\CommissionsCollection;
 use App\CommissionTask\Models\Operation;
 use App\CommissionTask\Models\OperationsCollection;
 use App\CommissionTask\Services\CommissionsCalculator;
@@ -17,9 +19,15 @@ use Money\Exchange\ReversedCurrenciesExchange;
 use Money\Parser\DecimalMoneyParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(CommissionsCalculator::class)]
+#[UsesClass(ExchangeRatesClient::class)]
+#[UsesClass(OperationsCollection::class)]
+#[UsesClass(CommissionsCollection::class)]
+#[UsesClass(MoneyHelper::class)]
+#[UsesClass(Commission::class)]
 class CommissionsCalculatorTest extends TestCase
 {
 
@@ -28,8 +36,8 @@ class CommissionsCalculatorTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->exchangeRatesClientMock = $this->createMock(ExchangeRatesClient::class);
-        $this->exchangeRatesClientMock
+        $exchangeRatesClientMock = $this->createMock(ExchangeRatesClient::class);
+        $exchangeRatesClientMock
             ->method('getRates')
             ->willReturn(new ReversedCurrenciesExchange(new FixedExchange([
                 'EUR' => [
@@ -37,8 +45,7 @@ class CommissionsCalculatorTest extends TestCase
                     'JPY' => '129.53',
                 ],
             ])));
-
-
+        $this->exchangeRatesClientMock = $exchangeRatesClientMock;
     }
 
     #[DataProvider('oneOperationPerUser')]
