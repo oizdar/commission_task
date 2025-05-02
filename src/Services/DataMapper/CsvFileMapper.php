@@ -14,7 +14,7 @@ class CsvFileMapper
 {
     /**
      * @param MapperInterface<T> $mapper
-     * @param CollectionInterface $collection
+     * @param TCollection        $collection
      */
     public function __construct(
         protected MapperInterface $mapper,
@@ -24,7 +24,7 @@ class CsvFileMapper
     }
 
     /**
-     * @return CollectionInterface
+     * @return TCollection
      */
     public function load(): CollectionInterface
     {

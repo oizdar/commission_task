@@ -17,6 +17,7 @@
         "php": ">=8.3",
         "ext-bcmath": "*",
         "ext-intl": "*",
+        "guzzlehttp/guzzle": "^7.9",
         "moneyphp/money": "^4.7",
         "symfony/console": "^7.2"
     },

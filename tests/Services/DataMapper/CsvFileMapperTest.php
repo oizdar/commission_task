@@ -13,7 +13,7 @@ use App\CommissionTask\Services\DataMapper\OperationsCSVDataMapper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass('App\CommissionTask\Service\DataMapper\CsvFileMapper')]
+#[CoversClass(CsvFileMapper::class)]
 class CsvFileMapperTest extends TestCase
 {
     public function testLoadOperations(): void

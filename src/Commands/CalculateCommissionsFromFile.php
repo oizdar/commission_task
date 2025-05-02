@@ -35,7 +35,7 @@ class CalculateCommissionsFromFile extends Command
         }
 
         if (!file_exists($filePath)) {
-            $output->writeln('<error>Plik nie istnieje: ' . $filePath . '</error>');
+            $output->writeln("<error>Plik nie istnieje: $filePath </error>");
 
             return Command::FAILURE;
         }

@@ -13,8 +13,6 @@ use App\CommissionTask\Models\OperationsCollection;
 use Money\Converter;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
-use Money\Exchange\FixedExchange;
-use Money\Exchange\ReversedCurrenciesExchange;
 use Money\Money;
 
 readonly class CommissionsCalculator
@@ -24,19 +22,19 @@ readonly class CommissionsCalculator
     public const float DEPOSIT_COMMISSION_PERCENTAGE = 0.03;
     public const float PRIVATE_WITHDRAW_COMMISSION_PERCENTAGE = 0.3;
     public const float BUSINESS_WITHDRAW_COMMISSION_PERCENTAGE = 0.5;
-
     public const int WEEKLY_FREE_OF_CHARGE_AMOUNT = 100000; // 1000.00 EUR
     public const string WITHDRAW_COMMISSION_CURRENCY = 'EUR';
     public const int WEEKLY_FREE_OF_CHARGE_TRANSACTIONS = 3;
-
     private Money $weeklyFreeOfChargeAmount;
-
     private CommissionsCollection $commissions;
+
+    private ExchangeRatesClient $exchangeRatesClient;
 
     public function __construct(private OperationsCollection $operations)
     {
         $this->weeklyFreeOfChargeAmount = new Money(self::WEEKLY_FREE_OF_CHARGE_AMOUNT, new Currency(self::WITHDRAW_COMMISSION_CURRENCY));
         $this->commissions = new CommissionsCollection();
+        $this->exchangeRatesClient = new ExchangeRatesClient();
     }
 
     public function calculateCommissions(): CommissionsCollection
@@ -80,9 +78,7 @@ readonly class CommissionsCalculator
         $userWeeklyOperations = $this->commissions->getWeeklyUserWithdrawals($operation);
 
         if ($userWeeklyOperations->count() < self::WEEKLY_FREE_OF_CHARGE_TRANSACTIONS) {
-
-
-            $converter = new Converter(new ISOCurrencies(), $exchange);
+            $converter = new Converter(new ISOCurrencies(), $this->exchangeRatesClient->getRates());
 
             $weeklyOperationsSum = $userWeeklyOperations->getSumInCurrency($converter, new Currency(self::WITHDRAW_COMMISSION_CURRENCY));
 
