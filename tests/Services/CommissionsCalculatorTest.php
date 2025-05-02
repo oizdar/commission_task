@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CommissionTask\Tests\Service;
+namespace App\CommissionTask\Tests\Services;
 
 use App\CommissionTask\Enums\OperationType;
 use App\CommissionTask\Enums\UserType;
@@ -8,7 +8,7 @@ use App\CommissionTask\Models\Collection;
 use App\CommissionTask\Models\Commission;
 use App\CommissionTask\Models\Operation;
 use App\CommissionTask\Models\OperationsCollection;
-use App\CommissionTask\Service\CommissionsCalculator;
+use App\CommissionTask\Services\CommissionsCalculator;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Parser\DecimalMoneyParser;
@@ -19,6 +19,13 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(CommissionsCalculator::class)]
 class CommissionsCalculatorTest extends TestCase
 {
+
+    /** TODO Mock
+     *'EUR' => [
+     * 'USD' => '1.1497',
+     * 'JPY' => '129.53',
+     * ],
+     */
     protected function setUp(): void
     {
         parent::setUp();

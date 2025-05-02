@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\CommissionTask\Service\FileHandler;
+namespace App\CommissionTask\Services\DataMapper;
 
 use App\CommissionTask\Models\CollectionInterface;
-use App\CommissionTask\Service\DataMapper\MapperInterface;
 
 /**
  * @template T of object
@@ -15,7 +14,7 @@ class CsvFileMapper
 {
     /**
      * @param MapperInterface<T> $mapper
-     * @param TCollection $collection
+     * @param CollectionInterface $collection
      */
     public function __construct(
         protected MapperInterface $mapper,
@@ -25,7 +24,7 @@ class CsvFileMapper
     }
 
     /**
-     * @return TCollection
+     * @return CollectionInterface
      */
     public function load(): CollectionInterface
     {

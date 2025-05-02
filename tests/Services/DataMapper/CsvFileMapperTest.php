@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\CommissionTask\Tests\Service\FileHandler;
+namespace App\CommissionTask\Tests\Services\DataMapper;
 
 use App\CommissionTask\Enums\OperationType;
 use App\CommissionTask\Enums\UserType;
 use App\CommissionTask\Models\Operation;
 use App\CommissionTask\Models\OperationsCollection;
-use App\CommissionTask\Service\DataMapper\OperationsCSVDataMapper;
-use App\CommissionTask\Service\FileHandler\CsvFileMapper;
+use App\CommissionTask\Services\DataMapper\CsvFileMapper;
+use App\CommissionTask\Services\DataMapper\OperationsCSVDataMapper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass('App\CommissionTask\Service\FileHandler\CsvFileMapper')]
+#[CoversClass('App\CommissionTask\Service\DataMapper\CsvFileMapper')]
 class CsvFileMapperTest extends TestCase
 {
     public function testLoadOperations(): void

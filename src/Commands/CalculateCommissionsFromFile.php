@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\CommissionTask\Command;
+namespace App\CommissionTask\Commands;
 
 use App\CommissionTask\Models\OperationsCollection;
-use App\CommissionTask\Service\CommissionsCalculator;
-use App\CommissionTask\Service\DataMapper\OperationsCSVDataMapper;
-use App\CommissionTask\Service\FileHandler\CsvFileMapper;
+use App\CommissionTask\Services\CommissionsCalculator;
+use App\CommissionTask\Services\DataMapper\CsvFileMapper;
+use App\CommissionTask\Services\DataMapper\OperationsCSVDataMapper;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

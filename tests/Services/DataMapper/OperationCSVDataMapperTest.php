@@ -1,11 +1,11 @@
 <?php
 
-namespace App\CommissionTask\Tests\Service\DataMapper;
+namespace App\CommissionTask\Tests\Services\DataMapper;
 
 use App\CommissionTask\Enums\OperationType;
 use App\CommissionTask\Enums\UserType;
 use App\CommissionTask\Models\Operation;
-use App\CommissionTask\Service\DataMapper\OperationsCSVDataMapper;
+use App\CommissionTask\Services\DataMapper\OperationsCSVDataMapper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

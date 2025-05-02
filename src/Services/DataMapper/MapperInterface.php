@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\CommissionTask\Service\DataMapper;
+namespace App\CommissionTask\Services\DataMapper;
 
 /**
  * @template T of object

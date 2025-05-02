@@ -2,7 +2,7 @@
 
 namespace App\CommissionTask\Tests\Command;
 
-use App\CommissionTask\Command\CalculateCommissionsFromFile;
+use App\CommissionTask\Commands\CalculateCommissionsFromFile;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;

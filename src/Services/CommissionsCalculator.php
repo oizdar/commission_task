@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\CommissionTask\Service;
+namespace App\CommissionTask\Services;
 
 use App\CommissionTask\Enums\OperationType;
 use App\CommissionTask\Enums\UserType;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\CommissionTask\Service\DataMapper;
+namespace App\CommissionTask\Services\DataMapper;
 
 use App\CommissionTask\Enums\OperationType;
 use App\CommissionTask\Enums\UserType;
