@@ -32,9 +32,10 @@
     },
     "scripts": {
         "phpunit": "phpunit",
+        "phpunit-coverage": "phpunit --coverage-text",
         "fix-cs": "php-cs-fixer fix",
         "test-cs": "php-cs-fixer fix --dry-run -v",
-        "phpstan": "phpstan analyse src tests",
+        "phpstan": "phpstan analyse",
         "test": ["@phpstan", "@phpunit", "@test-cs"]
     }
 }

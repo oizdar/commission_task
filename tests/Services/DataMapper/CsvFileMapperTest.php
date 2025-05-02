@@ -11,13 +11,12 @@ use App\CommissionTask\Models\OperationsCollection;
 use App\CommissionTask\Services\DataMapper\CsvFileMapper;
 use App\CommissionTask\Services\DataMapper\OperationsCSVDataMapper;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(CsvFileMapper::class)]
-#[UsesClass(OperationsCSVDataMapper::class)]
-#[UsesClass(OperationsCollection::class)]
-#[UsesClass(Operation::class)]
+#[CoversClass(OperationsCSVDataMapper::class)]
+#[CoversClass(OperationsCollection::class)]
+#[CoversClass(Operation::class)]
 class CsvFileMapperTest extends TestCase
 {
     public function testLoadOperations(): void

@@ -96,8 +96,6 @@ readonly class CommissionsCalculator
         }
 
         return MoneyHelper::zeroValue($operation->amount->getCurrency());
-
-
     }
 
     private function calculateCommissionForBusinessWithdraw(Operation $operation): Money

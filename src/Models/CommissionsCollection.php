@@ -27,7 +27,7 @@ class CommissionsCollection extends Collection
     }
 
     /**
-     * additional item references table created to speed up searches
+     * additional item references table created to speed up searches.
      */
     private function addGroupedByUser(Commission $item): void
     {

@@ -8,10 +8,10 @@ use App\CommissionTask\Models\Operation;
 use App\CommissionTask\Services\DataMapper\OperationsCSVDataMapper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DependsOnClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(OperationsCSVDataMapper::class)]
+#[CoversClass(Operation::class)]
 class OperationCSVDataMapperTest extends TestCase
 {
 

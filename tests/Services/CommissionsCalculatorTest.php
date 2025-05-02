@@ -19,15 +19,14 @@ use Money\Exchange\ReversedCurrenciesExchange;
 use Money\Parser\DecimalMoneyParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(CommissionsCalculator::class)]
-#[UsesClass(ExchangeRatesClient::class)]
-#[UsesClass(OperationsCollection::class)]
-#[UsesClass(CommissionsCollection::class)]
-#[UsesClass(MoneyHelper::class)]
-#[UsesClass(Commission::class)]
+#[CoversClass(OperationsCollection::class)]
+#[CoversClass(ExchangeRatesClient::class)]
+#[CoversClass(CommissionsCollection::class)]
+#[CoversClass(MoneyHelper::class)]
+#[CoversClass(Commission::class)]
 class CommissionsCalculatorTest extends TestCase
 {
 
