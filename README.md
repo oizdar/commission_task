@@ -1,8 +1,34 @@
-# Commission task skeleton
+# Commission task
 
-Following steps:
-- needed scripts could be found inside `composer.json`;
-- before submitting the task make sure that all the scripts pass (`composer run test` in particular);
-- this file should be updated before submitting the task with the documentation on how to run your program.
+Application needs at least php 8.3
 
-Good luck! :) 
+To run calculation use command
+```bash
+    ./console app:calculate-commissions  
+```
+```
+Description:
+  Calculate commisions using given file.
+
+Usage:
+  app:calculate-commissions [<file>]
+
+Arguments:
+  file                  File path [default: "./data/input.csv"]
+
+```
+
+All tests
+```bash
+    composer test
+```
+
+Above script runs, 
+```bash
+    composer phpstan
+    composer phpunit
+    composer fix-cs --dry-run
+```
+
+You can use all of them one by one
+
