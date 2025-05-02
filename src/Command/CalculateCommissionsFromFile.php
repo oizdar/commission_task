@@ -1,9 +1,11 @@
 <?php
 
-namespace App\CommissionTask\Commands;
+declare(strict_types=1);
 
-use App\CommissionTask\Service\CommissionsCalculator;
+namespace App\CommissionTask\Command;
+
 use App\CommissionTask\Models\OperationsCollection;
+use App\CommissionTask\Service\CommissionsCalculator;
 use App\CommissionTask\Service\DataMapper\OperationsCSVDataMapper;
 use App\CommissionTask\Service\FileHandler\CsvFileMapper;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -15,7 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:calculate-commissions')]
 class CalculateCommissionsFromFile extends Command
 {
-
     protected function configure(): void
     {
         $this
@@ -29,11 +30,13 @@ class CalculateCommissionsFromFile extends Command
 
         if (!is_string($filePath)) {
             $output->writeln('<error>Nieprawidłowy typ argumentu "file".</error>');
+
             return Command::FAILURE;
         }
 
         if (!file_exists($filePath)) {
             $output->writeln('<error>Plik nie istnieje: ' . $filePath . '</error>');
+
             return Command::FAILURE;
         }
 

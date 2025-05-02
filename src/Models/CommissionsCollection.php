@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\CommissionTask\Models;
 
+use App\CommissionTask\Enums\OperationType;
+
 /**
  * @extends Collection<Commission>
  */
@@ -18,7 +20,7 @@ class CommissionsCollection extends Collection
         parent::add($item);
     }
 
-    public function getWeeklyUserOperationsFromPreviousCommissions(Operation $operation): OperationsCollection
+    public function getWeeklyUserWithdrawals(Operation $operation): OperationsCollection
     {
         $startOfWeek = $operation->date->modify('monday this week');
         $endOfWeek = $operation->date->modify('sunday this week');
@@ -29,6 +31,7 @@ class CommissionsCollection extends Collection
                 && $item->operation->date <= $endOfWeek
                 && $item->operation->userId === $operation->userId
                 && $item->operation->userType === $operation->userType
+                && $item->operation->operationType === OperationType::Withdraw
         );
 
         return new OperationsCollection(array_map(fn (Commission $item) => $item->operation, $filtered));

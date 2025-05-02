@@ -14,7 +14,7 @@ use App\CommissionTask\Service\DataMapper\MapperInterface;
 class CsvFileMapper
 {
     /**
-     * @param MapperInterface<T>     $mapper
+     * @param MapperInterface<T> $mapper
      * @param TCollection $collection
      */
     public function __construct(

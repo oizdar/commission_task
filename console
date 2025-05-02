@@ -2,10 +2,11 @@
 <?php
 require_once 'vendor/autoload.php';
 
+use App\CommissionTask\Command\CalculateCommissionsFromFile;
 use Symfony\Component\Console;
 
 $console = new Console\Application('Commission Task', '1.0');
 
-$console->add(new \App\CommissionTask\Commands\CalculateCommissionsFromFile());
+$console->add(new CalculateCommissionsFromFile());
 
 $console->run();

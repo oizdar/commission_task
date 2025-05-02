@@ -25,11 +25,15 @@ class OperationsCollection extends Collection
     public function getSumInCurrency(Converter $converter, Currency $currency): Money
     {
         $sum = new Money(0, $currency);
+
         foreach ($this->items as $item) {
             if (!$item->amount->getCurrency()->equals($currency)) {
                 $converted = $converter->convert($item->amount, $currency);
+                $sum = $sum->add($converted);
+                continue;
             }
-            $sum = $sum->add($converted ?? $item->amount);
+
+            $sum = $sum->add($item->amount);
         }
 
         return $sum;

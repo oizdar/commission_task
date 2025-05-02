@@ -19,6 +19,7 @@ readonly class Commission
     public function getFormattedAmount(): string
     {
         $formatter = new DecimalMoneyFormatter(new ISOCurrencies());
+
         return $formatter->format($this->amount);
     }
 }
