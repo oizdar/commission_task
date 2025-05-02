@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 
 #[CoversClass(ExchangeRatesClient::class)]
+#[CoversClass(ConfigService::class)]
 class ExchangeRatesClientTest extends TestCase
 {
     public function testGetRates(): void

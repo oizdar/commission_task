@@ -9,6 +9,7 @@ use App\CommissionTask\Models\CommissionsCollection;
 use App\CommissionTask\Models\Operation;
 use App\CommissionTask\Models\OperationsCollection;
 use App\CommissionTask\Services\CommissionsCalculator;
+use App\CommissionTask\Services\ConfigService;
 use App\CommissionTask\Services\DataMapper\CsvFileMapper;
 use App\CommissionTask\Services\DataMapper\OperationsCSVDataMapper;
 use App\CommissionTask\Services\ExchangeRatesClient;
@@ -20,15 +21,16 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
 #[CoversClass(CalculateCommissionsFromFile::class)]
-#[UsesClass(MoneyHelper::class)]
-#[UsesClass(ExchangeRatesClient::class)]
-#[UsesClass(CommissionsCollection::class)]
-#[UsesClass(OperationsCollection::class)]
-#[UsesClass(Commission::class)]
-#[UsesClass(Operation::class)]
-#[UsesClass(CommissionsCalculator::class)]
-#[UsesClass(CsvFileMapper::class)]
-#[UsesClass(OperationsCSVDataMapper::class)]
+#[CoversClass(MoneyHelper::class)]
+#[CoversClass(ExchangeRatesClient::class)]
+#[CoversClass(CommissionsCollection::class)]
+#[CoversClass(OperationsCollection::class)]
+#[CoversClass(Commission::class)]
+#[CoversClass(Operation::class)]
+#[CoversClass(CommissionsCalculator::class)]
+#[CoversClass(CsvFileMapper::class)]
+#[CoversClass(OperationsCSVDataMapper::class)]
+#[CoversClass(ConfigService::class)]
 class CalculateCommissionCommandTest extends TestCase
 {
     private ExchangeRatesClient $exchangeRatesClientMock;

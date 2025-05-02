@@ -11,6 +11,7 @@ use App\CommissionTask\Models\CommissionsCollection;
 use App\CommissionTask\Models\Operation;
 use App\CommissionTask\Models\OperationsCollection;
 use App\CommissionTask\Services\CommissionsCalculator;
+use App\CommissionTask\Services\ConfigService;
 use App\CommissionTask\Services\ExchangeRatesClient;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
@@ -27,6 +28,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(CommissionsCollection::class)]
 #[CoversClass(MoneyHelper::class)]
 #[CoversClass(Commission::class)]
+#[CoversClass(ConfigService::class)]
 class CommissionsCalculatorTest extends TestCase
 {
 
