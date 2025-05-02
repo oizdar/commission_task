@@ -30,5 +30,12 @@ Above script runs,
     composer fix-cs --dry-run
 ```
 
-You can use all of them one by one
+There are also scripts for 
+```bash
+    composer fix-cs
+    composer phpunit-coverage
+```
 
+
+Created configuration in .env file - easy to modify,
+system accepts all currencies available in api with exchange rates
