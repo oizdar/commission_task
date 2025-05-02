@@ -2,7 +2,8 @@
 
 namespace App\CommissionTask\Tests\Integration\Services;
 
-use App\CommissionTask\Services\CommissionsCalculator;
+use App\CommissionTask\Enums\ConfigName;
+use App\CommissionTask\Services\ConfigService;
 use App\CommissionTask\Services\ExchangeRatesClient;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +16,7 @@ class ExchangeRatesClientTest extends TestCase
     {
         $exchangeRatesClient =  new ExchangeRatesClient();
         $exchangeRatesClient->getRates();
-        $this->assertEquals(CommissionsCalculator::WITHDRAW_COMMISSION_CURRENCY, $exchangeRatesClient->getBaseCurrency());
+        $this->assertEquals(ConfigService::getInstance()->get(ConfigName::WithdrawCommissionCurrency), $exchangeRatesClient->getBaseCurrency());
         $this->assertEquals((new \DateTimeImmutable())->format('Y-m-d'), $exchangeRatesClient->getLatestUpdateDate()?->format('Y-m-d'));
 
     }
