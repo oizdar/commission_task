@@ -8,6 +8,7 @@ use App\CommissionTask\Models\OperationsCollection;
 use App\CommissionTask\Services\CommissionsCalculator;
 use App\CommissionTask\Services\DataMapper\CsvFileMapper;
 use App\CommissionTask\Services\DataMapper\OperationsCSVDataMapper;
+use App\CommissionTask\Services\ExchangeRatesClient;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,6 +18,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:calculate-commissions')]
 class CalculateCommissionsFromFile extends Command
 {
+    private CommissionsCalculator $calculator;
+
+    public function __construct(?string $name = null, ExchangeRatesClient $exchangeRatesClient = null)
+    {
+        parent::__construct($name);
+
+        $this->calculator = new CommissionsCalculator($exchangeRatesClient ??  new ExchangeRatesClient());
+    }
+
+
     protected function configure(): void
     {
         $this
@@ -41,8 +52,7 @@ class CalculateCommissionsFromFile extends Command
         }
 
         $operations = $this->parseFile($filePath);
-        $calculator = new CommissionsCalculator($operations);
-        $commissions = $calculator->calculateCommissions();
+        $commissions = $this->calculator->calculateCommissions($operations);
 
         foreach ($commissions as $commission) {
             $output->writeln($commission->getFormattedAmount());

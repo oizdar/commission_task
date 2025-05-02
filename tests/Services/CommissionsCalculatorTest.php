@@ -9,8 +9,11 @@ use App\CommissionTask\Models\Commission;
 use App\CommissionTask\Models\Operation;
 use App\CommissionTask\Models\OperationsCollection;
 use App\CommissionTask\Services\CommissionsCalculator;
+use App\CommissionTask\Services\ExchangeRatesClient;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
+use Money\Exchange\FixedExchange;
+use Money\Exchange\ReversedCurrenciesExchange;
 use Money\Parser\DecimalMoneyParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -20,22 +23,29 @@ use PHPUnit\Framework\TestCase;
 class CommissionsCalculatorTest extends TestCase
 {
 
-    /** TODO Mock
-     *'EUR' => [
-     * 'USD' => '1.1497',
-     * 'JPY' => '129.53',
-     * ],
-     */
+    private ExchangeRatesClient $exchangeRatesClientMock;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->exchangeRatesClientMock = $this->createMock(ExchangeRatesClient::class);
+        $this->exchangeRatesClientMock
+            ->method('getRates')
+            ->willReturn(new ReversedCurrenciesExchange(new FixedExchange([
+                'EUR' => [
+                    'USD' => '1.1497',
+                    'JPY' => '129.53',
+                ],
+            ])));
+
+
     }
 
     #[DataProvider('oneOperationPerUser')]
     public function testOneCommissionPerUser(Operation $operation, Commission $expectedCommission): void
     {
-        $calculator = new CommissionsCalculator(new OperationsCollection([$operation]));
-        $commissions = $calculator->calculateCommissions();
+        $calculator = new CommissionsCalculator($this->exchangeRatesClientMock);
+        $commissions = $calculator->calculateCommissions(new OperationsCollection([$operation]));
 
         $this->assertEquals(1, $commissions->count());
         $this->assertEquals($expectedCommission, $commissions->get(0));
@@ -126,8 +136,8 @@ class CommissionsCalculatorTest extends TestCase
     #[DataProvider('multiplePrivateWithdrawOperationsPerUser')]
     public function testMultiplePrivateWithdrawalOperationsPerUser(OperationsCollection $operations, Collection $expectedCommissions): void
     {
-        $calculator = new CommissionsCalculator($operations);
-        $commissions = $calculator->calculateCommissions();
+        $calculator = new CommissionsCalculator($this->exchangeRatesClientMock);
+        $commissions = $calculator->calculateCommissions($operations);
         foreach ($expectedCommissions as $key => $expectedCommission) {
             $this->assertEquals($expectedCommission, $commissions->get($key), 'Commission mismatch for operation ' . $key);
         }

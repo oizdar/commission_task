@@ -28,18 +28,15 @@ readonly class CommissionsCalculator
     private Money $weeklyFreeOfChargeAmount;
     private CommissionsCollection $commissions;
 
-    private ExchangeRatesClient $exchangeRatesClient;
-
-    public function __construct(private OperationsCollection $operations)
+    public function __construct(private ExchangeRatesClient $exchangeRatesClient)
     {
         $this->weeklyFreeOfChargeAmount = new Money(self::WEEKLY_FREE_OF_CHARGE_AMOUNT, new Currency(self::WITHDRAW_COMMISSION_CURRENCY));
         $this->commissions = new CommissionsCollection();
-        $this->exchangeRatesClient = new ExchangeRatesClient();
     }
 
-    public function calculateCommissions(): CommissionsCollection
+    public function calculateCommissions(OperationsCollection $operations): CommissionsCollection
     {
-        foreach ($this->operations as $operation) {
+        foreach ($operations as $operation) {
             $this->commissions->add($this->calculateCommissionFromOperation($operation));
         }
 
