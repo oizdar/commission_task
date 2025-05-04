@@ -39,13 +39,13 @@ class CalculateCommissionsFromFile extends Command
         $filePath = $input->getArgument('file');
 
         if (!is_string($filePath)) {
-            $output->writeln('<error>Nieprawidłowy typ argumentu "file".</error>');
+            $output->writeln('<error>Invalid argument path "file".</error>');
 
             return Command::FAILURE;
         }
 
         if (!file_exists($filePath)) {
-            $output->writeln("<error>Plik nie istnieje: $filePath </error>");
+            $output->writeln("<error>File not found: $filePath </error>");
 
             return Command::FAILURE;
         }
