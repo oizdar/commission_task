@@ -81,7 +81,7 @@ readonly class CommissionsCalculator
         $config = ConfigService::getInstance();
         $privateWithdrawCommissionPercentage = (float) $config->get(ConfigName::PrivateWithdrawCommissionPercentage);
 
-        /**
+        /*
          * If the user has already made all free withdrawals this week, we charge the full commission.
          */
         if ($userWeeklyOperations->count() >= $config->get(ConfigName::WeeklyFreeOfChargeTransactions)) {
@@ -94,7 +94,7 @@ readonly class CommissionsCalculator
         $converter = new Converter(new ISOCurrencies(), $this->exchangeRatesClient->getRates());
         $weeklyOperationsSum = $userWeeklyOperations->getSumInCurrency($converter, new Currency($this->withdrawCommissionCurrencyCode));
 
-        /**
+        /*
          * If previous user withdrawals exceed the free amount, we charge the full commission.
          */
         if ($weeklyOperationsSum->greaterThan($this->weeklyFreeOfChargeAmount)) {
@@ -111,7 +111,7 @@ readonly class CommissionsCalculator
 
         $valueToCalculateCommission = $operation->amount->subtract($remainingFreeAmount);
 
-        /**
+        /*
          * If the user withdrawals are less than the free amount, we calculate the commission for the rest of the amount.
          */
         if ($valueToCalculateCommission->greaterThan(MoneyHelper::zeroValue($operation->amount->getCurrency()))) {
