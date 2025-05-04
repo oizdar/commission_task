@@ -1,4 +1,4 @@
-name: Laravel
+name: Commissions Task
 
 on:
   push:
